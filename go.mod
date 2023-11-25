@@ -1,4 +1,4 @@
-module gitlab.com/goutilities/log
+module github.com/stevohuncho/go-my-slog
 
 go 1.21.1
 

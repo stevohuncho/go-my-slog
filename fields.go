@@ -1,4 +1,4 @@
-package log
+package gomyslog
 
 import (
 	"fmt"
@@ -15,7 +15,8 @@ type Padding struct {
 	char  string
 }
 
-func (f Fields) Render(log string) string {
+func (f Fields) Render() string {
+	log := ""
 	for i, attr := range f.attrs {
 		log += "\n"
 		// add its personal prefix
@@ -29,7 +30,7 @@ func (f Fields) Render(log string) string {
 		switch v := attr.Value.Any().(type) {
 		case []slog.Attr:
 			typeLen := 0
-			if f.showType {
+			if f.ShowType {
 				log += f.typing.Render().Sprint("(group)")
 				typeLen = 7
 			}
@@ -48,7 +49,7 @@ func (f Fields) Render(log string) string {
 				if c == '\n' {
 					linesIdx += 1
 					lines = append(lines, "")
-				} else if (i+1)%f.maxValueLen == 0 {
+				} else if (i+1)%f.MaxValueLen == 0 {
 					linesIdx += 1
 					lines = append(lines, "")
 					lines[linesIdx] += f.value.Render().Sprint(string(c))
@@ -57,7 +58,7 @@ func (f Fields) Render(log string) string {
 				}
 			}
 			typeLen := 0
-			if f.showType {
+			if f.ShowType {
 				typeString := fmt.Sprintf("%T", v)
 				log += f.typing.Render().Sprintf("(%T)", typeString)
 				typeLen = len(typeString) + 2
@@ -111,7 +112,7 @@ func (f Fields) RenderGroup(log string, paddings ...Padding) string {
 		switch v := attr.Value.Any().(type) {
 		case []slog.Attr:
 			typeLen := 0
-			if f.showType {
+			if f.ShowType {
 				log += f.typing.Render().Sprint("(group)")
 				typeLen += 7
 			}
@@ -132,7 +133,7 @@ func (f Fields) RenderGroup(log string, paddings ...Padding) string {
 			lines := []string{""}
 			linesIdx := 0
 			for i, c := range fmt.Sprint(v) {
-				if (i+1)%f.maxValueLen == 0 || c == '\n' {
+				if (i+1)%f.MaxValueLen == 0 || c == '\n' {
 					linesIdx += 1
 					lines = append(lines, "")
 					lines[linesIdx] += f.value.Render().Sprint(string(c))
@@ -141,7 +142,7 @@ func (f Fields) RenderGroup(log string, paddings ...Padding) string {
 				}
 			}
 			typeLen := 0
-			if f.showType {
+			if f.ShowType {
 				typeString := fmt.Sprintf("%T", v)
 				log += f.typing.Render().Sprintf("(%T)", typeString)
 				typeLen = len(typeString) + 2
@@ -189,6 +190,10 @@ func (f Fields) NewFields(attrs []slog.Attr) Fields {
 		attrs:   attrs,
 		Styling: f.Styling,
 	}
+}
+
+func Prefix(prefix string) slog.Attr {
+	return slog.String("_696969_PREFIX", prefix)
 }
 
 func (f Fields) HasPrefix() (has bool) {

@@ -1,4 +1,4 @@
-package log
+package gomyslog
 
 import (
 	"log/slog"
@@ -9,9 +9,9 @@ import (
 type Styling struct {
 	StylingColors
 	StylingChars
-	showType    bool
-	showTime    bool
-	maxValueLen int
+	ShowType    bool
+	ShowTime    bool
+	MaxValueLen int
 }
 
 type Colors []Color
@@ -31,7 +31,7 @@ func (c Color) InvertGround() Color {
 	if c >= 100 && c <= 107 {
 		return c - 10
 	}
-	return c
+	return 6969
 }
 
 func (c Color) IsBg() bool {
@@ -87,6 +87,7 @@ type LevelColorMap map[slog.Level]Colors
 type StylingColors struct {
 	level  LevelColorMap
 	time   Colors
+	prefix Colors
 	msg    Colors
 	typing Colors
 	key    Colors
@@ -121,12 +122,13 @@ func DefaultStyling() Styling {
 				slog.LevelError: Colors{Color(color.BgRed), Color(color.FgWhite)},
 			},
 			time:   Colors{Color(color.BgHiBlack), Color(color.FgBlack)},
+			prefix: Colors{Color(color.FgWhite), Color(color.BgBlack), Color(color.Bold)},
 			msg:    Colors{Color(color.BgHiBlue), Color(color.FgWhite)},
 			typing: Colors{Color(color.FgGreen)},
 			key:    Colors{Color(color.FgBlue), Color(color.Bold)},
-			value:  Colors{Color(color.Italic)},
+			value:  Colors{Color(color.Italic), Color(color.Bold)},
 			tree:   nil,
-			ktov:   Colors{Color(color.FgRed)},
+			ktov:   nil,
 		},
 		StylingChars: StylingChars{
 			leftCap:      "",
@@ -143,8 +145,8 @@ func DefaultStyling() Styling {
 			dottedDash:   "╌",
 			dottedL:      "╎",
 		},
-		showType:    true,
-		showTime:    true,
-		maxValueLen: 10,
+		ShowType:    true,
+		ShowTime:    true,
+		MaxValueLen: 50,
 	}
 }
