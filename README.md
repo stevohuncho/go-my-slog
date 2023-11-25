@@ -1,4 +1,4 @@
-# go-my-slog
+# Go My Slog (similar to ohmyposh)
 ![example](./.README/example.png)
 ![example2](./.README/example2.png)
 #### A Go slog wrapper to make formatting your logs personalized and interpretable
