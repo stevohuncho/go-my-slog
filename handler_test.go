@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	gomyslog "github.com/stevohuncho/go-my-slog"
+	"github.com/stevohuncho/gomyslog"
 )
 
 func InitHandler() {

@@ -1,4 +1,4 @@
-module github.com/stevohuncho/go-my-slog
+module github.com/stevohuncho/gomyslog
 
 go 1.21.1
 
